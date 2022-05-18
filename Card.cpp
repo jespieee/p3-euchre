@@ -27,19 +27,21 @@ constexpr const char* const Card::SUIT_CLUBS;
 constexpr const char* const Card::SUIT_DIAMONDS;
 
 Card::Card(){
-    assert(false);
+    rank = RANK_TWO;
+    suit = SUIT_SPADES;
 }
 
 Card::Card(const std::string &rank_in, const std::string &suit_in){
-    assert(false);
+    rank = rank_in;
+    suit = suit_in;
 }
 
 std::string Card::get_rank()const{
-    assert(false);
+    return rank;
 }
 
 std::string Card::get_suit()const{
-    assert(false);
+    return suit;
 }
 
 std::string Card::get_suit(const std::string &trump)const{
@@ -47,11 +49,22 @@ std::string Card::get_suit(const std::string &trump)const{
 }
 
 bool Card::is_face()const{
-    assert(false);
+    if(rank == RANK_ACE || rank == RANK_QUEEN || rank == RANK_KING ||
+       rank == RANK_JACK){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 bool Card::is_right_bower(const std::string &trump)const{
-    assert(false);
+    if(rank == RANK_JACK && suit == trump){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 bool Card::is_left_bower(const std::string &trump)const{
@@ -59,7 +72,12 @@ bool Card::is_left_bower(const std::string &trump)const{
 }
 
 bool Card::is_trump(const std::string &trump) const{
-    assert(false);
+    if(trump == suit || is_left_bower(trump)){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 
