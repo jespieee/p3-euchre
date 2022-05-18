@@ -60,7 +60,7 @@ std::string Card::get_suit(const std::string &trump)const{
 }
 
 bool Card::is_face()const{
-<<<<<<< HEAD
+
     if (rank == RANK_JACK || rank == RANK_QUEEN || 
         rank == RANK_KING || rank == RANK_ACE) {
         return true;
@@ -73,7 +73,7 @@ bool Card::is_right_bower(const std::string &trump)const{
         return true;
     }
     return false;
-=======
+
     if(rank == RANK_ACE || rank == RANK_QUEEN || rank == RANK_KING ||
        rank == RANK_JACK){
         return true;
@@ -90,7 +90,7 @@ bool Card::is_right_bower(const std::string &trump)const{
     else{
         return false;
     }
->>>>>>> 77502497915d67df9591ad278279146af67d8ccc
+
 }
 
 bool Card::is_left_bower(const std::string &trump)const{
@@ -104,18 +104,12 @@ bool Card::is_left_bower(const std::string &trump)const{
 }
 
 bool Card::is_trump(const std::string &trump) const{
-<<<<<<< HEAD
-  
-    if (trump == suit || is_left_bower(trump)) {
-        return true;
-    }
-    else {
-=======
+
     if(trump == suit || is_left_bower(trump)){
         return true;
     }
     else{
->>>>>>> 77502497915d67df9591ad278279146af67d8ccc
+
         return false;
     }
 }
