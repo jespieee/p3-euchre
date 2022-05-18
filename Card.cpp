@@ -26,9 +26,87 @@ constexpr const char* const Card::SUIT_HEARTS;
 constexpr const char* const Card::SUIT_CLUBS;
 constexpr const char* const Card::SUIT_DIAMONDS;
 
-// add your code below
+Card::Card(){
+    assert(false);
+}
+
+Card::Card(const std::string &rank_in, const std::string &suit_in){
+    assert(false);
+}
+
+std::string Card::get_rank()const{
+    assert(false);
+}
+
+std::string Card::get_suit()const{
+    assert(false);
+}
+
+std::string Card::get_suit(const std::string &trump)const{
+    assert(false);
+}
+
+bool Card::is_face()const{
+    assert(false);
+}
+
+bool Card::is_right_bower(const std::string &trump)const{
+    assert(false);
+}
+
+bool Card::is_left_bower(const std::string &trump)const{
+    assert(false);
+}
+
+bool Card::is_trump(const std::string &trump) const{
+    assert(false);
+}
 
 
+bool operator<(const Card &lhs, const Card &rhs);
+
+//EFFECTS Returns true if lhs is lower value than rhs or the same card as rhs.
+//  Does not consider trump.
+bool operator<=(const Card &lhs, const Card &rhs);
+
+//EFFECTS Returns true if lhs is higher value than rhs.
+//  Does not consider trump.
+bool operator>(const Card &lhs, const Card &rhs);
+
+//EFFECTS Returns true if lhs is higher value than rhs or the same card as rhs.
+//  Does not consider trump.
+bool operator>=(const Card &lhs, const Card &rhs);
+
+//EFFECTS Returns true if lhs is same card as rhs.
+//  Does not consider trump.
+bool operator==(const Card &lhs, const Card &rhs);
+
+//EFFECTS Returns true if lhs is not the same card as rhs.
+//  Does not consider trump.
+bool operator!=(const Card &lhs, const Card &rhs);
+
+std::string Suit_next(const std::string &suit){
+    assert(false);
+}
+
+
+//EFFECTS Prints Card to stream, for example "Two of Spades"
+std::ostream & operator<<(std::ostream &os, const Card &card);
+
+//REQUIRES trump is a valid suit
+//EFFECTS Returns true if a is lower value than b.  Uses trump to determine
+// order, as described in the spec.
+bool Card_less(const Card &a, const Card &b, const std::string &trump){
+    assert(false);
+}
+
+//REQUIRES trump is a valid suit
+//EFFECTS Returns true if a is lower value than b.  Uses both the trump suit
+//  and the suit led to determine order, as described in the spec.
+bool Card_less(const Card &a, const Card &b, const Card &led_card,
+               const std::string &trump){
+    assert(false);
+}
 // NOTE: We HIGHLY recommend you check out the operator overloading
 // tutorial in the project spec (see the appendices) before implementing
 // the following operator overload functions:
