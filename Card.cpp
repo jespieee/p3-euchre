@@ -63,27 +63,39 @@ bool Card::is_trump(const std::string &trump) const{
 }
 
 
-bool operator<(const Card &lhs, const Card &rhs);
+bool operator<(const Card& lhs, const Card& rhs) {
+    assert(false);
+}
 
 //EFFECTS Returns true if lhs is lower value than rhs or the same card as rhs.
 //  Does not consider trump.
-bool operator<=(const Card &lhs, const Card &rhs);
+bool operator<=(const Card& lhs, const Card& rhs) {
+    assert(false);
+}
 
 //EFFECTS Returns true if lhs is higher value than rhs.
 //  Does not consider trump.
-bool operator>(const Card &lhs, const Card &rhs);
+bool operator>(const Card& lhs, const Card& rhs) {
+    assert(false);
+}
 
 //EFFECTS Returns true if lhs is higher value than rhs or the same card as rhs.
 //  Does not consider trump.
-bool operator>=(const Card &lhs, const Card &rhs);
+bool operator>=(const Card& lhs, const Card& rhs) {
+    assert(false);
+}
 
 //EFFECTS Returns true if lhs is same card as rhs.
 //  Does not consider trump.
-bool operator==(const Card &lhs, const Card &rhs);
+bool operator==(const Card& lhs, const Card& rhs) {
+    assert(false);
+}
 
 //EFFECTS Returns true if lhs is not the same card as rhs.
 //  Does not consider trump.
-bool operator!=(const Card &lhs, const Card &rhs);
+bool operator!=(const Card& lhs, const Card& rhs) {
+    assert(false);
+}
 
 std::string Suit_next(const std::string &suit){
     assert(false);
@@ -91,7 +103,9 @@ std::string Suit_next(const std::string &suit){
 
 
 //EFFECTS Prints Card to stream, for example "Two of Spades"
-std::ostream & operator<<(std::ostream &os, const Card &card);
+std::ostream& operator<<(std::ostream& os, const Card& card) {
+    assert(false);
+}
 
 //REQUIRES trump is a valid suit
 //EFFECTS Returns true if a is lower value than b.  Uses trump to determine

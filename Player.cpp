@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "Player.h"
+#include <cassert>
 Player * Player_factory(const std::string &name, const std::string &strategy) {
   assert(false);
 }
