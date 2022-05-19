@@ -46,6 +46,9 @@ std::string Card::get_suit()const{
 
 std::string Card::get_suit(const std::string &trump)const{
     if (trump == SUIT_DIAMONDS) {
+        if (rank == RANK_JACK) {
+
+        }
         return SUIT_DIAMONDS;
     }
     else if (trump == SUIT_HEARTS) {
@@ -114,39 +117,40 @@ bool Card::is_trump(const std::string &trump) const{
     }
 }
 
-
+//EFFECTS Returns true if lhs is lower value than rhs.
+//  Does not consider trump.
 bool operator<(const Card& lhs, const Card& rhs) {
-    assert(false);
+    return lhs.get_rank() < rhs.get_rank();
 }
 
 //EFFECTS Returns true if lhs is lower value than rhs or the same card as rhs.
 //  Does not consider trump.
 bool operator<=(const Card& lhs, const Card& rhs) {
-    assert(false);
+    return lhs.get_rank() < rhs.get_rank() || lhs.get_rank() == rhs.get_rank();
 }
 
 //EFFECTS Returns true if lhs is higher value than rhs.
 //  Does not consider trump.
 bool operator>(const Card& lhs, const Card& rhs) {
-    assert(false);
+    return !(lhs.get_rank() <= rhs.get_rank());
 }
 
 //EFFECTS Returns true if lhs is higher value than rhs or the same card as rhs.
 //  Does not consider trump.
 bool operator>=(const Card& lhs, const Card& rhs) {
-    assert(false);
+    return !(lhs.get_rank() < rhs.get_rank());
 }
 
 //EFFECTS Returns true if lhs is same card as rhs.
 //  Does not consider trump.
 bool operator==(const Card& lhs, const Card& rhs) {
-    assert(false);
+    return (lhs.get_rank() == rhs.get_rank() && lhs.get_suit() == rhs.get_suit());
 }
 
 //EFFECTS Returns true if lhs is not the same card as rhs.
 //  Does not consider trump.
 bool operator!=(const Card& lhs, const Card& rhs) {
-    assert(false);
+    return !(lhs.get_rank() == rhs.get_rank());
 }
 
 std::string Suit_next(const std::string &suit){
@@ -156,7 +160,7 @@ std::string Suit_next(const std::string &suit){
 
 //EFFECTS Prints Card to stream, for example "Two of Spades"
 std::ostream& operator<<(std::ostream& os, const Card& card) {
-    assert(false);
+    os << card.get_rank() << " of " << card.get_suit() << "\n";
 }
 
 //REQUIRES trump is a valid suit
