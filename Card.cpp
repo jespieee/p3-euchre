@@ -7,6 +7,7 @@
 // add any necessary #include or using directives here
 
 // rank and suit names -- do not remove these
+
 constexpr const char* const Card::RANK_TWO;
 constexpr const char* const Card::RANK_THREE;
 constexpr const char* const Card::RANK_FOUR;
@@ -24,7 +25,7 @@ constexpr const char* const Card::RANK_ACE;
 constexpr const char* const Card::SUIT_SPADES;
 constexpr const char* const Card::SUIT_HEARTS;
 constexpr const char* const Card::SUIT_CLUBS;
-constexpr const char* const Card::SUIT_DIAMONDS;
+constexpr const char* const Card::SUIT_DIAMONDS; 
 
 Card::Card(){
     rank = RANK_TWO;

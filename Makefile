@@ -1,5 +1,5 @@
 CXX ?= g++
-CXXFLAGS ?= -Wall -Werror -pedantic --std=c++11 -g
+CXXFLAGS ?= --std=c++11 -Wall -Werror -pedantic -g -fsanitize=address -fsanitize=undefined
 
 all: test
 
