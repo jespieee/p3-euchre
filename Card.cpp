@@ -71,20 +71,6 @@ bool Card::is_face()const{
     return false;
 }
 
-bool Card::is_right_bower(const std::string &trump)const{
-    if (rank == RANK_JACK && suit == trump) {
-        return true;
-    }
-    return false;
-
-    if(rank == RANK_ACE || rank == RANK_QUEEN || rank == RANK_KING ||
-       rank == RANK_JACK){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
 
 bool Card::is_right_bower(const std::string &trump)const{
     if(rank == RANK_JACK && suit == trump){
@@ -161,6 +147,7 @@ std::string Suit_next(const std::string &suit){
 //EFFECTS Prints Card to stream, for example "Two of Spades"
 std::ostream& operator<<(std::ostream& os, const Card& card) {
     os << card.get_rank() << " of " << card.get_suit() << "\n";
+    return os;
 }
 
 //REQUIRES trump is a valid suit
