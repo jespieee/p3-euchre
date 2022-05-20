@@ -8,6 +8,7 @@ using namespace std;
 
 Pack::Pack() {
     //int index_nine = 7;
+    next = 0;
     int suit_count = 0;
     for (int num = 0; num < 24;) {
         for (int rank_count = 7; rank_count <= 12; rank_count++) {
@@ -26,6 +27,7 @@ Pack::Pack(std::istream& pack_input) {
     string rank_in;
     string hold;
     string suit_in;
+    next = 0;
     
     for(int num = 0; num < 24; num++){
         pack_input >> rank_in >> hold >> suit_in;
@@ -48,13 +50,19 @@ void Pack::shuffle() {
     for(int i = 0; i < 7; i++) {
         std::array<Card, 12> half2;
         std::array<Card, 12> half1;
+        // set 1st half array
         for (int j = 0; j < 12; j++) {
             half1[j] = cards[j];
         }
+        // set 2nd half array
         for (int k = 0; k < 12; k++) {
             half2[k] = cards[k + 12];
+        
         }
-        for (int l = 0; l < 23; l += 2) {
+        for (int l = 0; l < 23; l++) {
+            if (l % 2 = 0) {
+
+            }
             cards[l] = half2[l / 2];
             cards[l + 1] = half1[l / 2];
         }
