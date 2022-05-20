@@ -9,13 +9,13 @@ using namespace std;
 Pack::Pack() {
     //int index_nine = 7;
     int suit_count = 0;
-    for(int num = 0; num < 24; num++){
-        for(int rank_count = 7; rank_count <= 12; rank_count++){
+    for (int num = 0; num < 24;) {
+        for (int rank_count = 7; rank_count <= 12; rank_count++) {
             cards[num] = Card(RANK_NAMES_BY_WEIGHT[rank_count],SUIT_NAMES_BY_WEIGHT[suit_count]);
             num++;
         }
         suit_count++;
-        if(suit_count == 4){
+        if (suit_count == 4) {
             suit_count = 0;
         }
     }
@@ -65,6 +65,11 @@ void Pack::shuffle() {
 
 
 bool Pack::empty() const {
-    assert(false);
-    assert(next);
+    // check next is end of array
+    if (next == PACK_SIZE) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
