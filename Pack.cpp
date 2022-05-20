@@ -45,12 +45,28 @@ void Pack::reset() {
 
 void Pack::shuffle() {
     //in shuffle 7 times
+    std::array<Card, PACK_SIZE> shuffled;
+    shuffled[0] = cards[12];
+    shuffled[1] = cards[0];
+    int counter2nd = 12;
+    int counter1st = 0;
     for(int i = 0; i < 7; i++){
-        //cut deck in half
-        
+        for (int j = 2; j < PACK_SIZE; j++) {
+            if (j % 2 == 0) {
+                shuffled[j] = cards[counter2nd];
+                counter2nd++;
+            }
+            else {
+                shuffled[j] = cards[counter1st];
+                counter1st++;
+            }
+        }
         //go down each pile swapping positions of cards
     }
-    
+    for (int i = 0; i < PACK_SIZE; i++) {
+        cards[i] = shuffled[i];
+    }
+    return;
 }
 
 
