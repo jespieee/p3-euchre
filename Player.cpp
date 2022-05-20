@@ -4,38 +4,101 @@
 #include <string>
 #include "Player.h"
 #include <cassert>
-Player * Player_factory(const std::string &name, const std::string &strategy) {
+using namespace std;
+class Human : public Player
+{
+private:
+  string name;
+  std::vector<Card> hand;
+
+public:
+  Human() {
+    name = "Default";
+  }
+  Human(const string& in_name) {
+    name = in_name;
+  }
+  const std::string &get_name() const
+  {
+    assert(false);
+  }
+
+  void add_card(const Card &c)
+  {
+    assert(false);
+  }
+
+  virtual bool Human::make_trump(const Card &upcard, bool is_dealer,
+                                 int round, std::string &order_up_suit) const
+  {
+    assert(false);
+  }
+
+  virtual void add_and_discard(const Card &upcard)
+  {
+    assert(false);
+  }
+
+  virtual Card lead_card(const std::string &trump)
+  {
+    assert(false);
+  }
+
+  virtual Card play_card(const Card &led_card, const std::string &trump)
+  {
+    assert(false);
+  }
+};
+class Simple : public Player
+{
+private:
+  string name;
+  std::vector<Card> hand;
+
+public:
+Simple() {
+  name = "Default";
+}
+Simple(const string& in_name) {
+  name = in_name;
+}
+  const std::string &Simple::get_name() const {
+    return name;
+  }
+
+  void add_card(const Card &c) {
+    hand.push_back(c);
+  }
+
+  virtual bool make_trump(const Card &upcard, bool is_dealer,
+                          int round, std::string &order_up_suit) const {
+    assert(false);
+  }
+
+  virtual void add_and_discard(const Card &upcard)
+  {
+    assert(false);
+  }
+
+  virtual Card lead_card(const std::string &trump)
+  {
+    assert(false);
+  }
+
+  virtual Card play_card(const Card &led_card, const std::string &trump)
+  {
+    assert(false);
+  }
+};
+Player *Player_factory(const std::string &name, const std::string &strategy)
+{
+  if (strategy == "Human")
+  {
+    return new Human(name);
+  }
+}
+
+std::ostream &operator<<(std::ostream &os, const Player &p)
+{
   assert(false);
 }
-
-std::ostream & operator<<(std::ostream &os, const Player &p) {
-  assert(false);
-}
-
-/*const std::string & Player::get_name() const = 0;{
-    assert(false);
-}
-
-void Player::add_card(const Card &c) = 0{
-    assert(false);
-  }
-
-virtual bool Player::make_trump(const Card &upcard, bool is_dealer,
-                        int round, std::string &order_up_suit) const = 0{
-    assert(false);
-  }
-
-
-virtual void Player::add_and_discard(const Card &upcard) = 0{
-    assert(false);
-  }
-
-virtual Card Player::lead_card(const std::string &trump) = 0{
-    assert(false);
-  }
-
-virtual Player::Card play_card(const Card &led_card, const std::string &trump) = 0{
-    assert(false);
-  }
-*/
-

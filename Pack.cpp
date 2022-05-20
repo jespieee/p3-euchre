@@ -9,7 +9,8 @@ using namespace std;
 Pack::Pack() {
     //int index_nine = 7;
     int suit_count = 0;
-    for(int num = 0; num < 24; num++){
+    next = 0;
+    for(int num = 0; num < 24;){
         for(int rank_count = 7; rank_count <= 12; rank_count++){
             cards[num] = Card(RANK_NAMES_BY_WEIGHT[rank_count],SUIT_NAMES_BY_WEIGHT[suit_count]);
             num++;
@@ -26,6 +27,7 @@ Pack::Pack(std::istream& pack_input) {
     string rank_in;
     string hold;
     string suit_in;
+    next = 0;
     
     for(int num = 0; num < 24; num++){
         pack_input >> rank_in >> hold >> suit_in;
@@ -65,6 +67,10 @@ void Pack::shuffle() {
 
 
 bool Pack::empty() const {
-    assert(false);
-    assert(next);
+    if (next == PACK_SIZE) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
