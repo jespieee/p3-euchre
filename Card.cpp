@@ -47,19 +47,28 @@ std::string Card::get_suit()const{
 
 std::string Card::get_suit(const std::string &trump)const{
     if (trump == SUIT_DIAMONDS) {
-        if (rank == RANK_JACK) {
-
+        if(is_left_bower(trump)){
+            return SUIT_DIAMONDS;
         }
-        return SUIT_DIAMONDS;
+        return suit;
     }
     else if (trump == SUIT_HEARTS) {
-        return SUIT_HEARTS;
+        if(is_left_bower(trump)){
+            return SUIT_HEARTS;
+        }
+        return suit;
     }
     else if (trump == SUIT_CLUBS) {
-        return SUIT_CLUBS;
+        if(is_left_bower(trump)){
+            return SUIT_CLUBS;
+        }
+        return suit;
     }
     else {
-        return SUIT_SPADES;
+        if(is_left_bower(trump)){
+            return SUIT_SPADES;
+        }
+        return suit;
     }
 }
 
@@ -84,10 +93,8 @@ bool Card::is_right_bower(const std::string &trump)const{
 }
 
 bool Card::is_left_bower(const std::string &trump)const{
-    if (rank == RANK_JACK) {
-        if (trump == SUIT_DIAMONDS) {
-
-        }
+    if (rank == RANK_JACK && get_suit(trump) == trump) {
+        
         return true;
     }
     return false;
@@ -141,13 +148,24 @@ bool operator!=(const Card& lhs, const Card& rhs) {
 }
 
 std::string Suit_next(const std::string &suit){
-    assert(false);
+    if (suit == Card::SUIT_DIAMONDS){
+        return Card::SUIT_HEARTS;
+    }
+    else if (suit == Card::SUIT_HEARTS) {
+        return Card::SUIT_DIAMONDS;
+    }
+    else if (suit == Card::SUIT_CLUBS) {
+        return Card::SUIT_SPADES;
+    }
+    else {
+        return Card::SUIT_CLUBS;
+    }
 }
 
 
 //EFFECTS Prints Card to stream, for example "Two of Spades"
 std::ostream& operator<<(std::ostream& os, const Card& card) {
-    os << card.get_rank() << " of " << card.get_suit() << "\n";
+    os << card.get_rank() << " of " << card.get_suit();
     return os;
 }
 
@@ -155,7 +173,26 @@ std::ostream& operator<<(std::ostream& os, const Card& card) {
 //EFFECTS Returns true if a is lower value than b.  Uses trump to determine
 // order, as described in the spec.
 bool Card_less(const Card &a, const Card &b, const std::string &trump){
-    assert(false);
+    //both trump
+    if(a.get_suit() == trump && b.get_suit() == trump){
+        if(a.get_rank() >= b.get_rank()){
+            return false;
+        }
+    }
+    //a trump
+    else if(a.get_suit() == trump && b.get_suit() != trump){
+        return false;
+    }
+    //btrump
+    else if(b.get_suit() == trump && a.get_suit() != trump){
+        return true;
+    }
+    else{
+        if(a.get_rank() >= b.get_rank()){
+            return false;
+        }
+    }
+    return true;
 }
 
 //REQUIRES trump is a valid suit
@@ -163,7 +200,33 @@ bool Card_less(const Card &a, const Card &b, const std::string &trump){
 //  and the suit led to determine order, as described in the spec.
 bool Card_less(const Card &a, const Card &b, const Card &led_card,
                const std::string &trump){
-    assert(false);
+    if(a.get_suit() == trump && b.get_suit() == trump){
+        if(a.get_rank() >= b.get_rank()){
+            return false;
+        }
+    }
+    //a trump
+    else if(a.get_suit() == trump && b.get_suit() != trump){
+        return false;
+    }
+    //btrump
+    else if(b.get_suit() == trump && a.get_suit() != trump){
+        return true;
+    }
+    //a led card suit but b not
+    else if(a.get_suit() == led_card.get_suit() && b.get_suit()
+                                                != led_card.get_suit()){
+        //maybe check if b is not trump
+        return false;
+    }
+    //b led card suit but a not
+    else if(a.get_suit() == led_card.get_suit() && b.get_suit() == led_card.get_suit()){
+        if(a.get_rank() >= b.get_rank()){
+            return false;
+        }
+    }
+    //both led card suit
+    return true;
 }
 // NOTE: We HIGHLY recommend you check out the operator overloading
 // tutorial in the project spec (see the appendices) before implementing

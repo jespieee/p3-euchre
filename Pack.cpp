@@ -7,28 +7,50 @@ using namespace std;
 
 
 Pack::Pack() {
-    assert(false);
-    assert(next);
+    //int index_nine = 7;
+    int suit_count = 0;
+    for(int num = 0; num < 24; num++){
+        for(int rank_count = 7; rank_count < 12; rank_count++){
+            cards[num] = Card(RANK_NAMES_BY_WEIGHT[rank_count],SUIT_NAMES_BY_WEIGHT[suit_count]);
+            num++;
+        }
+        suit_count++;
+        if(suit_count == 4){
+            suit_count = 0;
+        }
+    }
+    
 }
 
 Pack::Pack(std::istream& pack_input) {
-    assert(false);
-    assert(next);
+    string rank_in;
+    string hold;
+    string suit_in;
+    
+    for(int num = 0; num < 24; num++){
+        pack_input >> rank_in >> hold >> suit_in;
+        cards[num] = Card(rank_in, suit_in);
+    }
 }
 
 Card Pack::deal_one() {
-    assert(false);
-    assert(next);
+    Card wanted = cards[next];
+    next++;
+    return wanted;
 }
 
 void Pack::reset() {
-  assert(false);
-  assert(next); // DELETEME: avoid error "private field is not used"
+    next = 0;
 }
 
 void Pack::shuffle() {
-    assert(false);
-    assert(next);
+    //in shuffle 7 times
+    for(int i = 0; i < 7; i++){
+        //cut deck in half
+        
+        //go down each pile swapping positions of cards
+    }
+    
 }
 
 

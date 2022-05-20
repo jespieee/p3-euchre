@@ -13,6 +13,11 @@ TEST(test_card_ctor) {
     ASSERT_EQUAL(Card::SUIT_HEARTS, c.get_suit());
 }
 
+TEST(is_left_bower){
+    Card jack_spades = Card(Card::RANK_JACK, Card::SUIT_SPADES);
+    ASSERT_TRUE(jack_spades.is_left_bower("Clubs"));
+}
+
 // Add more test cases here
 
 TEST_MAIN()
