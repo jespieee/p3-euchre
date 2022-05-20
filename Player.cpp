@@ -18,34 +18,28 @@ public:
   Human(const string& in_name) {
     name = in_name;
   }
-  const std::string &get_name() const
-  {
+  const std::string &get_name() const {
+    return name;
+  }
+
+  void add_card(const Card &c) {
+    hand.push_back(c);
+  }
+
+  bool make_trump(const Card &upcard, bool is_dealer,
+                                 int round, std::string &order_up_suit) const {
     assert(false);
   }
 
-  void add_card(const Card &c)
-  {
+  void add_and_discard(const Card &upcard) {
     assert(false);
   }
 
-  virtual bool Human::make_trump(const Card &upcard, bool is_dealer,
-                                 int round, std::string &order_up_suit) const
-  {
+  Card lead_card(const std::string &trump) {
     assert(false);
   }
 
-  virtual void add_and_discard(const Card &upcard)
-  {
-    assert(false);
-  }
-
-  virtual Card lead_card(const std::string &trump)
-  {
-    assert(false);
-  }
-
-  virtual Card play_card(const Card &led_card, const std::string &trump)
-  {
+  Card play_card(const Card &led_card, const std::string &trump) {
     assert(false);
   }
 };
@@ -56,13 +50,13 @@ private:
   std::vector<Card> hand;
 
 public:
-Simple() {
+  Simple() {
   name = "Default";
-}
-Simple(const string& in_name) {
+  }
+  Simple(const string& in_name) {
   name = in_name;
-}
-  const std::string &Simple::get_name() const {
+  }
+  const std::string& get_name() const {
     return name;
   }
 
@@ -70,35 +64,58 @@ Simple(const string& in_name) {
     hand.push_back(c);
   }
 
-  virtual bool make_trump(const Card &upcard, bool is_dealer,
+  bool make_trump(const Card &upcard, bool is_dealer,
                           int round, std::string &order_up_suit) const {
+    // 2nd round strategy
+    // orderup if hand has face of opposite color to order_up_suit
+    if (round == 2) {
+      for (int handCount = 0; handCount < MAX_HAND_SIZE; handCount++) {
+
+      }
+    }
+    // 1st round strategy
+    // check for 2 or more trump face cards
+    int trumpFace = 0;
+    for (int handCount = 0; handCount < MAX_HAND_SIZE; handCount++) {
+      if (hand[handCount].is_face() && hand[handCount].is_trump(order_up_suit)) {
+        trumpFace++;
+      }
+    }
+    if (trumpFace >= 2) {
+      if (is_dealer) {
+        // call add and discard here
+        return true;
+      }
+      else {
+        return true;
+      }
+      }
+      return false;
+  }
+
+  void add_and_discard(const Card &upcard) {
     assert(false);
   }
 
-  virtual void add_and_discard(const Card &upcard)
-  {
+  Card lead_card(const std::string &trump) {
     assert(false);
   }
 
-  virtual Card lead_card(const std::string &trump)
-  {
-    assert(false);
-  }
-
-  virtual Card play_card(const Card &led_card, const std::string &trump)
-  {
+  Card play_card(const Card &led_card, const std::string &trump) {
     assert(false);
   }
 };
-Player *Player_factory(const std::string &name, const std::string &strategy)
-{
+Player *Player_factory(const std::string &name, const std::string &strategy) {
   if (strategy == "Human")
   {
     return new Human(name);
   }
+  else {
+    return new Simple(name);
+  }
 }
 
-std::ostream &operator<<(std::ostream &os, const Player &p)
-{
-  assert(false);
+std::ostream &operator<<(std::ostream &os, const Player &p) {
+  os << p.get_name();
+  return os;
 }
