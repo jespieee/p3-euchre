@@ -4,6 +4,7 @@
 #include <string>
 #include "Player.h"
 #include <cassert>
+#include <vector>
 using namespace std;
 class Human : public Player
 {
@@ -43,8 +44,7 @@ public:
     assert(false);
   }
 };
-class Simple : public Player
-{
+class Simple : public Player {
 private:
   string name;
   std::vector<Card> hand;
@@ -69,32 +69,65 @@ public:
     // 2nd round strategy
     // orderup if hand has face of opposite color to order_up_suit
     if (round == 2) {
-      for (int handCount = 0; handCount < MAX_HAND_SIZE; handCount++) {
-
-      }
+        for (int handCount = 0; handCount < MAX_HAND_SIZE; handCount++) {
+            if (order_up_suit == SUIT_NAMES_BY_WEIGHT[0] && 
+                hand[handCount].is_face() && 
+                hand[handCount].get_suit() == SUIT_NAMES_BY_WEIGHT[2]) {
+                order_up_suit = SUIT_NAMES_BY_WEIGHT[2];
+            }
+            else if (order_up_suit == SUIT_NAMES_BY_WEIGHT[1] &&
+                hand[handCount].is_face() &&
+                hand[handCount].get_suit() == SUIT_NAMES_BY_WEIGHT[3]) {
+                order_up_suit = SUIT_NAMES_BY_WEIGHT[3];
+            }
+            else if (order_up_suit == SUIT_NAMES_BY_WEIGHT[2] &&
+                hand[handCount].is_face() &&
+                hand[handCount].get_suit() == SUIT_NAMES_BY_WEIGHT[0]) {
+                order_up_suit = SUIT_NAMES_BY_WEIGHT[0];
+            }
+            else if (order_up_suit == SUIT_NAMES_BY_WEIGHT[3] &&
+                hand[handCount].is_face() &&
+                hand[handCount].get_suit() == SUIT_NAMES_BY_WEIGHT[1]) {
+                order_up_suit = SUIT_NAMES_BY_WEIGHT[1];
+            }
+        }       
     }
+
     // 1st round strategy
     // check for 2 or more trump face cards
-    int trumpFace = 0;
-    for (int handCount = 0; handCount < MAX_HAND_SIZE; handCount++) {
-      if (hand[handCount].is_face() && hand[handCount].is_trump(order_up_suit)) {
-        trumpFace++;
-      }
+    else {
+        int trumpFace = 0;
+        for (int handCount = 0; handCount < MAX_HAND_SIZE; handCount++) {
+            if (hand[handCount].is_face() && hand[handCount].is_trump(order_up_suit)) {
+                trumpFace++;
+            }
+        }
+        if (trumpFace >= 2) {
+            if (is_dealer) {
+                // call add and discard here
+                
+                return true;
+            }
+            else {
+                return true;
+            }
+        }
+        return false;
     }
-    if (trumpFace >= 2) {
-      if (is_dealer) {
-        // call add and discard here
-        return true;
-      }
-      else {
-        return true;
-      }
-      }
-      return false;
   }
 
   void add_and_discard(const Card &upcard) {
-    assert(false);
+      Card min = hand[0];
+      int index = 0;
+      for (int handCount = 0; handCount < MAX_HAND_SIZE; handCount++) {
+          if (hand[handCount] < min) {
+              min = hand[handCount];
+              index = handCount;
+          }
+      }
+      if (min < upcard) {
+          hand[index] = upcard;
+      }
   }
 
   Card lead_card(const std::string &trump) {
