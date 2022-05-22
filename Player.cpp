@@ -105,7 +105,8 @@ public:
         else {
             int trumpFace = 0;
             for (int handCount = 0; handCount < MAX_HAND_SIZE; handCount++) {
-                if (hand[handCount].is_face() && hand[handCount].is_trump(upcard.get_suit())) {
+                if (hand[handCount].is_face() && 
+                    hand[handCount].is_trump(upcard.get_suit())) {
                     trumpFace++;
                 }
             }
@@ -192,7 +193,7 @@ public:
         return returnCard;
     }
 };
-Player *Player_factory(const std::string &name, const std::string &strategy) {
+Player * Player_factory(const std::string &name, const std::string &strategy) {
   if (strategy == "Human")
   {
     return new Human(name);
@@ -201,6 +202,7 @@ Player *Player_factory(const std::string &name, const std::string &strategy) {
     return new Simple(name);
   }
   else {
+      assert(false);
       return nullptr;
   }
 }

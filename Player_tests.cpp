@@ -2,7 +2,6 @@
 
 #include "Player.h"
 #include "unit_test_framework.h"
-#include "Player.cpp"
 #include <iostream>
 
 using namespace std;

@@ -84,3 +84,12 @@ style :
     --files $(FILES)
 	@echo "########################################"
 	@echo "EECS 280 style checks PASS"
+# Copy files to CAEN Linux
+sync :
+	rsync \
+  -rtv \
+  --delete \
+  --exclude '.git*' \
+  --filter=':- .gitignore' \
+  ../p3-euchre/ \
+  mhuhu@login.engin.umich.edu:p3-stats-copy/

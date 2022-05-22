@@ -12,7 +12,8 @@ Pack::Pack() {
     next = 0;
     for(int num = 0; num < 24;){
         for(int rank_count = 7; rank_count <= 12; rank_count++){
-            cards[num] = Card(RANK_NAMES_BY_WEIGHT[rank_count],SUIT_NAMES_BY_WEIGHT[suit_count]);
+            cards[num] = Card(RANK_NAMES_BY_WEIGHT[rank_count], 
+                              SUIT_NAMES_BY_WEIGHT[suit_count]);
             num++;
         }
         suit_count++;

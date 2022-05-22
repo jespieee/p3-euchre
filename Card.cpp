@@ -46,6 +46,7 @@ std::string Card::get_suit()const{
 }
 
 std::string Card::get_suit(const std::string &trump)const{
+    
     if (trump == SUIT_DIAMONDS) {
         if(is_left_bower(trump)){
             return SUIT_DIAMONDS;
@@ -93,9 +94,22 @@ bool Card::is_right_bower(const std::string &trump)const{
 }
 
 bool Card::is_left_bower(const std::string &trump)const{
-    if (rank == RANK_JACK && get_suit(trump) == trump) {
-        
-        return true;
+    if (rank != RANK_JACK) {
+        return false;
+    }
+    if (rank == RANK_JACK) {
+        if (trump == SUIT_CLUBS && suit == SUIT_SPADES) {
+            return true;
+        }
+        else if (trump == SUIT_SPADES && suit == SUIT_CLUBS) {
+            return true;
+        }
+        else if (trump == SUIT_HEARTS && suit == SUIT_DIAMONDS) {
+            return true;
+        }
+        else if (trump == SUIT_DIAMONDS && suit == SUIT_HEARTS) {
+            return true;
+        }
     }
     return false;
 }
@@ -151,118 +165,22 @@ bool operator<(const Card& lhs, const Card& rhs) {
 //EFFECTS Returns true if lhs is lower value than rhs or the same card as rhs.
 //  Does not consider trump.
 bool operator<=(const Card& lhs, const Card& rhs) {
-    int lhs_rank = 0;
-    int rhs_rank = 0;
-    for (int j = 0; j < 13; j++) {       
-        if (lhs.get_rank() == RANK_NAMES_BY_WEIGHT[j]) {
-            lhs_rank = j;
-        }
-        if (rhs.get_rank() == RANK_NAMES_BY_WEIGHT[j]) {
-            rhs_rank = j;
-        }
-    }
-    if (lhs_rank < rhs_rank) {
-        return true;
-    }
-    else if (lhs_rank > rhs_rank) {
-        return false;
-    }
-    else if (lhs.get_rank() == rhs.get_rank() && lhs.get_suit() == rhs.get_suit()) {
-        return true;
-    }
-    else {
-        int lhs_suit = 0;
-        int rhs_suit = 0;
-        for (int i = 0; i < 4; i++) {
-            if (lhs.get_suit() == SUIT_NAMES_BY_WEIGHT[i]) {
-                lhs_suit = i;
-            }
-            if (rhs.get_suit() == SUIT_NAMES_BY_WEIGHT[i]) {
-                rhs_suit = i;
-            }
-        }
-        if (lhs_suit < rhs_suit) {
-            return true;
-        }
-    }
-    return false;
+    return (lhs < rhs || lhs == rhs);
+    
 }
 
 //EFFECTS Returns true if lhs is higher value than rhs.
 //  Does not consider trump.
 bool operator>(const Card& lhs, const Card& rhs) {
-    int lhs_rank = 0;
-    int rhs_rank = 0;
-    for (int j = 0; j < 13; j++) {
-        if (lhs.get_rank() == RANK_NAMES_BY_WEIGHT[j]) {
-            lhs_rank = j;
-        }
-        if (rhs.get_rank() == RANK_NAMES_BY_WEIGHT[j]) {
-            rhs_rank = j;
-        }
-    }
-    if (lhs_rank > rhs_rank) {
-        return true;
-    }
-    else if (lhs_rank < rhs_rank) {
-        return false;
-    }
-    else {
-        int lhs_suit = 0;
-        int rhs_suit = 0;
-        for (int i = 0; i < 4; i++) {
-            if (lhs.get_suit() == SUIT_NAMES_BY_WEIGHT[i]) {
-                lhs_suit = i;
-            }
-            if (rhs.get_suit() == SUIT_NAMES_BY_WEIGHT[i]) {
-                rhs_suit = i;
-            }
-        }
-        if (lhs_suit > rhs_suit) {
-            return true;
-        }
-    }
-    return false;
+    return !(lhs <= rhs);
+    
 }
 
 //EFFECTS Returns true if lhs is higher value than rhs or the same card as rhs.
 //  Does not consider trump.
 bool operator>=(const Card& lhs, const Card& rhs) {
-    int lhs_rank = 0;
-    int rhs_rank = 0;
-    for (int j = 0; j < 13; j++) {
-        if (lhs.get_rank() == RANK_NAMES_BY_WEIGHT[j]) {
-            lhs_rank = j;
-        }
-        if (rhs.get_rank() == RANK_NAMES_BY_WEIGHT[j]) {
-            rhs_rank = j;
-        }
-    }
-    if (lhs_rank > rhs_rank) {
-        return true;
-    }
-    else if (lhs_rank < rhs_rank) {
-        return false;
-    }
-    else if (lhs.get_rank() == rhs.get_rank() && lhs.get_suit() == rhs.get_suit()) {
-        return true;
-    }
-    else {
-        int lhs_suit = 0;
-        int rhs_suit = 0;
-        for (int i = 0; i < 4; i++) {
-            if (lhs.get_suit() == SUIT_NAMES_BY_WEIGHT[i]) {
-                lhs_suit = i;
-            }
-            if (rhs.get_suit() == SUIT_NAMES_BY_WEIGHT[i]) {
-                rhs_suit = i;
-            }
-        }
-        if (lhs_suit > rhs_suit) {
-            return true;
-        }
-    }
-    return false;
+    return !(lhs < rhs);
+    
 }
 
 //EFFECTS Returns true if lhs is same card as rhs.
@@ -274,7 +192,7 @@ bool operator==(const Card& lhs, const Card& rhs) {
 //EFFECTS Returns true if lhs is not the same card as rhs.
 //  Does not consider trump.
 bool operator!=(const Card& lhs, const Card& rhs) {
-    return !(lhs.get_rank() == rhs.get_rank() || lhs.get_suit() == rhs.get_suit());
+    return !(lhs == rhs);
 }
 
 std::string Suit_next(const std::string &suit){
