@@ -155,16 +155,27 @@ TEST(test_card_less1) {
     Card c2(Card::RANK_ACE, Card::SUIT_DIAMONDS);
     Card c3(Card::RANK_ACE, Card::SUIT_HEARTS);
     Card c4(Card::RANK_JACK, Card::SUIT_HEARTS);
+
+    // both trump
+    ASSERT_TRUE(Card_less(c3, c4, Card::SUIT_HEARTS));
+    // rank less
     ASSERT_TRUE(Card_less(c, c1, Card::SUIT_HEARTS));
+    // rank less but trump
     ASSERT_FALSE(Card_less(c, c1, Card::SUIT_SPADES));
+    // same card
     ASSERT_FALSE(Card_less(c1, c2, Card::SUIT_HEARTS));
+    // rank same suit less
     ASSERT_TRUE(Card_less(c3, c1, Card::SUIT_SPADES));
+    // rank less suit same
     ASSERT_TRUE(Card_less(c4, c1, Card::SUIT_SPADES));
+    // left bower
     ASSERT_FALSE(Card_less(c4, c1, Card::SUIT_DIAMONDS));
 }
 
 
 TEST(test_card_less2) {
+
+    // both trump
 
 }
 // Add more test cases here
