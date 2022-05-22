@@ -222,21 +222,24 @@ std::ostream& operator<<(std::ostream& os, const Card& card) {
 // order, as described in the spec.
 bool Card_less(const Card &a, const Card &b, const std::string &trump){
     //both trump
-    if(a.get_suit() == trump && b.get_suit() == trump){
-        if(a.get_rank() >= b.get_rank()){
+    if (a.is_trump(trump) && b.is_trump(trump)) {
+        if (a >= b) {
+            return false;
+        }
+        else if (a.is_left_bower(trump)) {
             return false;
         }
     }
     //a trump
-    else if(a.get_suit() == trump && b.get_suit() != trump){
+    else if (a.is_trump(trump) && !(b.is_trump(trump))) { 
         return false;
     }
     //btrump
-    else if(b.get_suit() == trump && a.get_suit() != trump){
+    else if (!(a.is_trump(trump)) && b.is_trump(trump)) {
         return true;
     }
     else{
-        if(a.get_rank() >= b.get_rank()){
+        if (a >= b) {
             return false;
         }
     }
@@ -248,17 +251,20 @@ bool Card_less(const Card &a, const Card &b, const std::string &trump){
 //  and the suit led to determine order, as described in the spec.
 bool Card_less(const Card &a, const Card &b, const Card &led_card,
                const std::string &trump){
-    if(a.get_suit() == trump && b.get_suit() == trump){
-        if(a.get_rank() >= b.get_rank()){
+    if (a.is_trump(trump) && b.is_trump(trump)) {
+        if(a >= b){
+            return false;
+        }
+        else if (a.is_left_bower(trump)) {
             return false;
         }
     }
-    //a trump
-    else if(a.get_suit() == trump && b.get_suit() != trump){
+    // a trump
+    else if (a.is_trump(trump) && !(b.is_trump(trump))) {
         return false;
     }
-    //btrump
-    else if(b.get_suit() == trump && a.get_suit() != trump){
+    // btrump
+    else if (!(a.is_trump(trump)) && b.is_trump(trump)) {
         return true;
     }
     //a led card suit but b not
@@ -274,6 +280,11 @@ bool Card_less(const Card &a, const Card &b, const Card &led_card,
         }
     }
     //both led card suit
+    else {
+        if (a >= b) {
+            return false;
+        }
+    }
     return true;
 }
 // NOTE: We HIGHLY recommend you check out the operator overloading

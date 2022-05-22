@@ -91,6 +91,81 @@ TEST(test_less_equal_operator) {
 
 TEST(test_greater_operator) {
 
+    Card left(Card::RANK_ACE, Card::SUIT_CLUBS);
+    Card right(Card::RANK_JACK, Card::SUIT_CLUBS);
+    Card left1(Card::RANK_ACE, Card::SUIT_DIAMONDS);
+    ASSERT_TRUE(left > right);
+    ASSERT_FALSE(right > left);
+    ASSERT_FALSE(left > left1);
+    ASSERT_TRUE(left1 > left);
+
+}
+
+TEST(test_greater_equal_operator) {
+
+    Card left(Card::RANK_ACE, Card::SUIT_CLUBS);
+    Card right(Card::RANK_ACE, Card::SUIT_CLUBS);
+    Card right1(Card::RANK_ACE, Card::SUIT_DIAMONDS);
+    ASSERT_TRUE(left >= right);
+    ASSERT_TRUE(right >= left);
+    ASSERT_TRUE(right1 >= left);
+    ASSERT_FALSE(left >= right1);
+
+}
+
+TEST(test_equal_operator) {
+    Card left(Card::RANK_FOUR, Card::SUIT_CLUBS);
+    Card right(Card::RANK_FOUR, Card::SUIT_CLUBS);
+    Card left1(Card::RANK_SIX, Card::SUIT_HEARTS);
+    ASSERT_TRUE(left == right);
+    ASSERT_FALSE(left == left1);
+}
+
+TEST(test_unequal_operator) {
+    Card left(Card::RANK_JACK, Card::SUIT_DIAMONDS);
+    Card right(Card::RANK_JACK, Card::SUIT_DIAMONDS);
+    Card left1(Card::RANK_KING, Card::SUIT_SPADES);
+    ASSERT_FALSE(left != right);
+    ASSERT_TRUE(left != left1);
+}
+
+TEST(test_suit_next) {
+    string d = Suit_next(Card::SUIT_HEARTS);
+    string h = Suit_next(Card::SUIT_DIAMONDS);
+    string c = Suit_next(Card::SUIT_SPADES);
+    string s = Suit_next(Card::SUIT_CLUBS);
+    ASSERT_EQUAL(d, Card::SUIT_DIAMONDS);
+    ASSERT_EQUAL(h, Card::SUIT_HEARTS);
+    ASSERT_EQUAL(c, Card::SUIT_CLUBS);
+    ASSERT_EQUAL(s, Card::SUIT_SPADES);
+
+}
+
+TEST(test_output_operator) {
+    Card c = Card();
+    ostringstream oss;
+    oss << c;
+    ASSERT_EQUAL(oss.str(), "Two of Spades");
+
+}
+
+TEST(test_card_less1) {
+    Card c(Card::RANK_TWO, Card::SUIT_SPADES);
+    Card c1(Card::RANK_ACE, Card::SUIT_DIAMONDS);
+    Card c2(Card::RANK_ACE, Card::SUIT_DIAMONDS);
+    Card c3(Card::RANK_ACE, Card::SUIT_HEARTS);
+    Card c4(Card::RANK_JACK, Card::SUIT_HEARTS);
+    ASSERT_TRUE(Card_less(c, c1, Card::SUIT_HEARTS));
+    ASSERT_FALSE(Card_less(c, c1, Card::SUIT_SPADES));
+    ASSERT_FALSE(Card_less(c1, c2, Card::SUIT_HEARTS));
+    ASSERT_TRUE(Card_less(c3, c1, Card::SUIT_SPADES));
+    ASSERT_TRUE(Card_less(c4, c1, Card::SUIT_SPADES));
+    ASSERT_FALSE(Card_less(c4, c1, Card::SUIT_DIAMONDS));
+}
+
+
+TEST(test_card_less2) {
+
 }
 // Add more test cases here
 

@@ -11,7 +11,7 @@ class Human : public Player
 {
 private:
   string name;
-  std::vector<Card> hand;
+  vector<Card> hand;
 
 public:
   Human() {
@@ -20,7 +20,7 @@ public:
   Human(const string& in_name) {
     name = in_name;
   }
-  const std::string &get_name() const {
+  const string &get_name() const {
     return name;
   }
 
@@ -30,27 +30,37 @@ public:
 
   bool make_trump(const Card &upcard, bool is_dealer,
                                  int round, std::string &order_up_suit) const {
-      return false;
+      bool decision;
+      cin >> decision;
+      return decision;
   }
 
   void add_and_discard(const Card &upcard) {
-    assert(false);
+      int indexChosen;
+      Card discard;
+      cin >> indexChosen;
+      if (indexChosen >= 0 && indexChosen < 5) {
+          hand[indexChosen] = upcard;
+      }
+      return;
   }
 
   Card lead_card(const std::string &trump) {
-      Card returnCard;
-      return returnCard;
+      int indexChosen;
+      cin >> indexChosen;
+      return hand[indexChosen];
   }
 
   Card play_card(const Card &led_card, const std::string &trump) {
-      Card returnCard;
-      return returnCard;
+      int indexChosen;
+      cin >> indexChosen;
+      return hand[indexChosen];
   }
 };
 class Simple : public Player {
 private:
     string name;
-    std::vector<Card> hand;
+    vector<Card> hand;
 
 public:
     Simple() {
@@ -59,7 +69,7 @@ public:
     Simple(const string& in_name) {
         name = in_name;
     }
-    const std::string& get_name() const {
+    const string& get_name() const {
         return name;
     }
 
