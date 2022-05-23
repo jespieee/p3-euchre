@@ -182,17 +182,17 @@ TEST(test_card_less_led) {
     Card led2(Card::RANK_NINE, Card::SUIT_HEARTS);
     Card a2(Card::RANK_JACK, Card::SUIT_SPADES);
     Card b2(Card::RANK_ACE, Card::SUIT_HEARTS);
-    ASSERT_FALSE(Card_less(a, b, led1, Card::SUIT_DIAMONDS));
+    ASSERT_TRUE(Card_less(a2, b2, led2, Card::SUIT_DIAMONDS));
     //both led suit
     Card led3(Card::RANK_NINE, Card::SUIT_HEARTS);
     Card a3(Card::RANK_JACK, Card::SUIT_HEARTS);
     Card b3(Card::RANK_KING, Card::SUIT_HEARTS);
-    ASSERT_TRUE(Card_less(a, b, led3, Card::SUIT_SPADES));
+    ASSERT_TRUE(Card_less(a3, b3, led3, Card::SUIT_SPADES));
     //neither led
     Card led4(Card::RANK_ACE, Card::SUIT_HEARTS);
     Card a4(Card::RANK_JACK, Card::SUIT_DIAMONDS);
     Card b4(Card::RANK_KING, Card::SUIT_SPADES);
-    ASSERT_TRUE(Card_less(a, b, led4, Card::SUIT_CLUBS))
+    ASSERT_TRUE(Card_less(a4, b4, led4, Card::SUIT_CLUBS))
 }
 // Add more test cases here
 
