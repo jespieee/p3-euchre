@@ -30,28 +30,39 @@ public:
 
   bool make_trump(const Card &upcard, bool is_dealer,
                                  int round, std::string &order_up_suit) const {
-      bool decision;
-      cin >> decision;
+      string choice;
+      bool decision = true;
+      cin >> choice;
+      if (choice == "pass") {
+          decision = false;
+      }
+      else {
+          order_up_suit = choice;
+      }
       return decision;
   }
 
   void add_and_discard(const Card &upcard) {
       int indexChosen;
-      Card discard;
       cin >> indexChosen;
-      if (indexChosen >= 0 && indexChosen < 5) {
+      if (indexChosen == -1) {
+          return;
+      }
+      else {
           hand[indexChosen] = upcard;
       }
       return;
   }
 
   Card lead_card(const std::string &trump) {
+      sort(hand.begin(), hand.end());
       int indexChosen;
       cin >> indexChosen;
       return hand[indexChosen];
   }
 
   Card play_card(const Card &led_card, const std::string &trump) {
+      sort(hand.begin(), hand.end());
       int indexChosen;
       cin >> indexChosen;
       return hand[indexChosen];
