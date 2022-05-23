@@ -223,10 +223,16 @@ std::ostream& operator<<(std::ostream& os, const Card& card) {
 bool Card_less(const Card &a, const Card &b, const std::string &trump){
     //both trump
     if (a.is_trump(trump) && b.is_trump(trump)) {
-        if (a >= b) {
+        if (b.is_right_bower(trump)) {
+            return true;
+        }
+        else if (a >= b) {
             return false;
         }
-        else if (a.is_left_bower(trump)) {
+        else if (a.is_right_bower(trump)) {
+            return false;
+        }
+        else if (a.is_left_bower(trump) && !(b.is_right_bower(trump))) {
             return false;
         }
     }
