@@ -276,7 +276,7 @@ bool Card_less(const Card &a, const Card &b, const Card &led_card,
     //both led card suit
     else {
         if (a >= b) {
-
+            return false;
         }
     }
     return true;
