@@ -97,10 +97,6 @@ TEST(test_lead_card) {
     alice->add_card(Card(Card::RANK_KING, Card::SUIT_SPADES));
     alice->add_card(Card(Card::RANK_ACE, Card::SUIT_SPADES));
 
-    alice->add_and_discard(
-        Card(Card::RANK_NINE, Card::SUIT_HEARTS) // upcard
-    );
-
     Card card_led = alice->lead_card(Card::SUIT_SPADES);
 
     Card jack_spades(Card::RANK_JACK, Card::SUIT_SPADES);
@@ -118,10 +114,6 @@ TEST(test_lead_card2) {
     alice->add_card(Card(Card::RANK_QUEEN, Card::SUIT_CLUBS));
     alice->add_card(Card(Card::RANK_KING, Card::SUIT_CLUBS));
     alice->add_card(Card(Card::RANK_ACE, Card::SUIT_CLUBS));
-
-    alice->add_and_discard(
-        Card(Card::RANK_NINE, Card::SUIT_HEARTS) // upcard
-    );
 
     Card card_led = alice->lead_card(Card::SUIT_CLUBS);
 
@@ -141,10 +133,6 @@ TEST(test_lead_card3) {
     alice->add_card(Card(Card::RANK_QUEEN, Card::SUIT_HEARTS));
     alice->add_card(Card(Card::RANK_TEN, Card::SUIT_DIAMONDS));
 
-    alice->add_and_discard(
-        Card(Card::RANK_NINE, Card::SUIT_HEARTS) // upcard
-    );
-
     Card card_led = alice->lead_card(Card::SUIT_CLUBS);
 
     Card queen_hearts(Card::RANK_QUEEN, Card::SUIT_HEARTS);
@@ -161,10 +149,6 @@ TEST(test_lead_card4) {
     alice->add_card(Card(Card::RANK_TEN, Card::SUIT_HEARTS));
     alice->add_card(Card(Card::RANK_ACE, Card::SUIT_HEARTS));
     alice->add_card(Card(Card::RANK_TEN, Card::SUIT_DIAMONDS));
-
-    alice->add_and_discard(
-        Card(Card::RANK_NINE, Card::SUIT_HEARTS) // upcard
-    );
 
     Card card_led = alice->lead_card(Card::SUIT_SPADES);
 

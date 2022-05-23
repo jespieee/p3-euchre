@@ -166,17 +166,13 @@ public:
         }
         if (numTrump == static_cast<int>(hand.size()) || 
             nonTrump == static_cast<int>(hand.size())) {
-            if (hasLeft && hasRight) {
+            if (hasRight) {
                 returnCard = hand[rightIndex];
                 hand.erase(hand.begin() + rightIndex);
             }
             else if (hasLeft && !hasRight) {
                 returnCard = hand[leftIndex];
                 hand.erase(hand.begin() + leftIndex);
-            }
-            else if (hasRight && !hasLeft) {
-                returnCard = hand[rightIndex];
-                hand.erase(hand.begin() + rightIndex);
             }
             else {
                 returnCard = hand[hand.size() - 1];
