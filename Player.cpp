@@ -143,15 +143,22 @@ public:
     }
 
     Card lead_card(const std::string& trump) {
-        int numTrump = 0;
-        int nonTrump = 0;
         sort(hand.begin(), hand.end());
-        Card returnCard;
+        Card returnCard, max = hand[0];
+        bool hasRight = false, hasLeft = false;
+        int leftIndex = 0, rightIndex = 0, numTrump = 0, nonTrump = 0;
         // for loop to count num trump and non trump
-        //sort(hand.begin(), hand.end());
         for (int handCount = 0; handCount < static_cast<int>(hand.size()); handCount++) {
-            if (hand[handCount].get_suit() == trump) {
+            if (hand[handCount].is_trump(trump)) {
                 numTrump++;
+                if (hand[handCount].is_left_bower(trump)) {
+                    hasLeft = true;
+                    leftIndex = handCount;
+                }
+                if (hand[handCount].is_right_bower(trump)) {
+                    hasRight = true;
+                    rightIndex = handCount;
+                }
             }
             else {
                 nonTrump++;
@@ -159,15 +166,25 @@ public:
         }
         if (numTrump == static_cast<int>(hand.size()) || 
             nonTrump == static_cast<int>(hand.size())) {
-            // play highest
-            returnCard = hand[hand.size() - 1];
-            hand.erase(hand.begin() + hand.size() - 1);
+            if (hasLeft && hasRight) {
+                returnCard = hand[rightIndex];
+                hand.erase(hand.begin() + rightIndex);
+            }
+            else if (hasLeft && !hasRight) {
+                returnCard = hand[leftIndex];
+                hand.erase(hand.begin() + leftIndex);
+            }
+            else if (hasRight && !hasLeft) {
+                returnCard = hand[rightIndex];
+                hand.erase(hand.begin() + rightIndex);
+            }
+            else {
+                returnCard = hand[hand.size() - 1];
+                hand.erase(hand.begin() + hand.size() - 1);
+            }
         }
-        else {
-           
-            Card max = hand[0];
+        else {           
             int i = hand.size() - 1;
-            // play highest non trump
             while (!hand[i].is_trump(trump)) {
                 if (hand[i] > max) {
                     max = hand[i];
@@ -175,8 +192,6 @@ public:
                 i--;
             }
             returnCard = max;
-            
-            //returnCard = hand[hand.size() - 1 - numTrump];
             hand.erase(hand.begin() + hand.size() - 1 - numTrump);         
         }
         return returnCard;

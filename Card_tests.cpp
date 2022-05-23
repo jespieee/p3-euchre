@@ -157,7 +157,7 @@ TEST(test_card_less1) {
     Card c4(Card::RANK_JACK, Card::SUIT_HEARTS);
 
     // both trump
-    ASSERT_TRUE(Card_less(c3, c4, Card::SUIT_HEARTS));
+    ASSERT_FALSE(Card_less(c3, c4, Card::SUIT_HEARTS));
     // rank less
     ASSERT_TRUE(Card_less(c, c1, Card::SUIT_HEARTS));
     // rank less but trump
@@ -172,10 +172,7 @@ TEST(test_card_less1) {
     ASSERT_FALSE(Card_less(c4, c1, Card::SUIT_DIAMONDS));
 }
 
-
-TEST(test_card_less2) {
-
-    // both trump
+TEST(test_card_less_led) {
 
 }
 // Add more test cases here

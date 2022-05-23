@@ -251,21 +251,9 @@ bool Card_less(const Card &a, const Card &b, const std::string &trump){
 //  and the suit led to determine order, as described in the spec.
 bool Card_less(const Card &a, const Card &b, const Card &led_card,
                const std::string &trump){
-    if (a.is_trump(trump) && b.is_trump(trump)) {
-        if(a >= b){
-            return false;
-        }
-        else if (a.is_left_bower(trump)) {
-            return false;
-        }
-    }
-    // a trump
-    else if (a.is_trump(trump) && !(b.is_trump(trump))) {
-        return false;
-    }
-    // btrump
-    else if (!(a.is_trump(trump)) && b.is_trump(trump)) {
-        return true;
+
+    if (a.get_suit() != led_card.get_suit() && b.get_suit() != led_card.get_suit()) {
+        return Card_less(a, b, trump);
     }
     //a led card suit but b not
     else if(a.get_suit() == led_card.get_suit() && b.get_suit()
@@ -282,7 +270,7 @@ bool Card_less(const Card &a, const Card &b, const Card &led_card,
     //both led card suit
     else {
         if (a >= b) {
-            return false;
+
         }
     }
     return true;
