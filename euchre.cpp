@@ -211,7 +211,7 @@ public:
         // index of curWinner
         int indexWinner = indexStarter;
         for (int i = 0; i < players.size(); i++) {
-            if (curWinner = players[i]) {
+            if (curWinner == players[i]) {
                 indexWinner = i;
             }
         }
@@ -240,7 +240,7 @@ public:
                      << " win the hand\n" << "march!\n";
             }
             else if (t2roundsWon >= 3) { // euched case
-                t2score =+ 2;
+                t2score += 2;
                 cout << *players[1] << " and " << *players[3] 
                     << " win the hand\n" << "euchred!\n";
             }
@@ -256,7 +256,7 @@ public:
                      << " win the hand\n" << "march!\n";
             }
             else if (t1roundsWon >= 3) { // euched case
-                t1score =+ 2;
+                t1score += 2;
                 cout << *players[0] << " and " << *players[2] 
                     << " win the hand\n" << "euchred!\n";
             }

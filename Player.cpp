@@ -191,7 +191,7 @@ public:
             }
         }
         else {           
-            int i = hand.size() - 1;
+            int i = static_cast<int>(hand.size() - 1) ;
             while (!hand[i].is_trump(trump)) {
                 if (hand[i] > max) {
                     max = hand[i];

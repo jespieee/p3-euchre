@@ -14,7 +14,12 @@ TEST(test_pack_default_ctor) {
     ASSERT_EQUAL(Card::SUIT_SPADES, first.get_suit());
 }
 
-
+//TEST(test_shuffle){
+//    Pack pack;
+//    pack.shuffle();
+//    Card first = pack.deal_one();
+//    ASSERT_EQUAL(first, <#second#>)
+//}
 // Add more tests here
 
 TEST_MAIN()
