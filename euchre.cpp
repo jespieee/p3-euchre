@@ -13,6 +13,8 @@ class Game {
 private:
     int t1score;
     int t2score;
+    int t1roundScore;
+    int t2roundScore;
     int dealerCount;
     int turnCount;
     string trump;
@@ -28,6 +30,7 @@ public:
         t2score = 0;
         wantShuffle = true;       
     }
+
     Game(Pack pack_in, bool shuffle_in, vector<Player*> players_in) {
         turnCount = 0;
         dealerCount = 0;
@@ -37,18 +40,40 @@ public:
         pack = pack_in;
         players = players_in;
     }
+
     int gett1score() {
         return t1score;
     }
+
     int gett2score() {
         return t2score;
     }
+
     int getTurn() {
         return turnCount;
     }
+
     Player* getPlayer(int playerIndex) {
         return players[playerIndex];
     }
+
+    void playRound(int declareIndex) {
+
+        // Setup
+        // Shuffle
+        // Deal
+        // Make trump
+        // Round 1
+        // Round 2
+        // Trick taking
+        // Scoring
+        int indexWinner = playTrick(dealerCount);
+        for (int trickCounter = 0; trickCounter < 5; trickCounter++) {
+            indexWinner = playTrick(indexWinner);
+
+        }
+    }
+
     void shuffler() {
         if (wantShuffle) {
             pack.shuffle();
@@ -57,6 +82,7 @@ public:
             pack.reset();
         }
     }
+
     void nextTurn() {
         if (turnCount == 3) {
             turnCount = 0;
@@ -65,6 +91,7 @@ public:
             turnCount++;
         }
     }
+
     int nextPlayer(int player_Index) {
         if (player_Index == 3) {
             return 0;
@@ -73,6 +100,7 @@ public:
             return player_Index + 1;
         }
     }
+
     void cardDeal() {
         // start to left of dealer
         int pos = nextPlayer(dealerCount);
@@ -112,6 +140,7 @@ public:
         upcard = pack.deal_one();
         cout << upcard << " turned up\n";
     }
+    
 	void makeTrump() {
 		// start to left of dealer
 		int pos = nextPlayer(dealerCount);
@@ -151,16 +180,6 @@ public:
         }
 	}
 
-    Card trickWinner(Card cardLed, Card justPlayed, Player* curWin, Player* curPlayer) {
-        Card curPlayed = curPlayer->play_card(cardLed, trump);
-        cout << curPlayed << " played by " << curPlayer << endl;
-        if (Card_less(justPlayed, curPlayed, trump)) {
-            curWin = curPlayer;
-            return curPlayed;
-        }
-        return justPlayed;
-    }
-
     int playTrick(int indexStarter) {
 
         // initialize players from start position
@@ -199,8 +218,14 @@ public:
         return indexWinner;      
     }
 
-    void playRound(int declareIndex) {
-
+    Card trickWinner(Card cardLed, Card justPlayed, Player* curWin, Player* curPlayer) {
+        Card curPlayed = curPlayer->play_card(cardLed, trump);
+        cout << curPlayed << " played by " << curPlayer << endl;
+        if (Card_less(justPlayed, curPlayed, trump)) {
+            curWin = curPlayer;
+            return curPlayed;
+        }
+        return justPlayed;
     }
 
     void roundScoreCalculator(int declareIndex, int t1roundsWon, int t2roundsWon) {
