@@ -70,7 +70,7 @@ public:
         int indexWinner = playTrick(dealerCount);
         for (int trickCounter = 0; trickCounter < 5; trickCounter++) {
             indexWinner = playTrick(indexWinner);
-
+            
         }
     }
 
