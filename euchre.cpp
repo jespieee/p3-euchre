@@ -151,6 +151,93 @@ public:
         }
 	}
 
+    Card trickWinner(Card cardLed, Card justPlayed, Player* curWin, Player* curPlayer) {
+        Card curPlayed = curPlayer->play_card(cardLed, trump);
+        cout << curPlayed << " played by " << curPlayer << endl;
+        if (Card_less(justPlayed, curPlayed, trump)) {
+            curWin = curPlayer;
+            return curPlayed;
+        }
+        return justPlayed;
+    }
+
+    int playTrick(int indexStarter) {
+
+        // initialize players from start position
+        int index = indexStarter;
+        Player* starter = players[index];  // Player 0
+        index = nextPlayer(index);
+        Player* player1 = players[index];  // Player 1
+        index = nextPlayer(index);
+        Player* player2 = players[index];  // Player 2
+        index = nextPlayer(index);
+        Player* player3 = players[index];  // Player 3
+        index = nextPlayer(index);
+
+        // variables needed for trickWinner function
+        Card winningCard;
+        Player* curWinner = players[indexStarter];
+        Card cardLed = starter->lead_card(trump);
+
+        // print led card
+        cout << cardLed << " led by " << *starter << endl;
+        winningCard = cardLed;
+
+        // determine winning card
+        winningCard = trickWinner(cardLed, winningCard, player1, curWinner);
+        winningCard = trickWinner(cardLed, winningCard, player2, curWinner);
+        winningCard = trickWinner(cardLed, winningCard, player3, curWinner);
+        cout << *curWinner << " takes the trick \n\n"; 
+
+        // index of curWinner
+        int indexWinner = indexStarter;
+        for (int i = 0; i < players.size(); i++) {
+            if (curWinner = players[i]) {
+                indexWinner = i;
+            }
+        }
+        return indexWinner;      
+    }
+
+    void playRound(int declareIndex) {
+
+    }
+
+    void roundScoreCalculator(int declareIndex, int t1roundsWon, int t2roundsWon) {
+        if (declareIndex == 0 || declareIndex == 2) { // t1 called trump
+            if (t1roundsWon >= 3 && t1roundsWon < 5) { // 1 point win
+                t1score++;
+                cout << *players[0] << " and " << *players[2] << " win the hand\n";
+            }
+            else if (t1roundsWon == 5) { // sweep case
+                t1score += 2;
+                cout << *players[0] << " and " << *players[2] 
+                     << " win the hand\n" << "march!\n";
+            }
+            else if (t2roundsWon >= 3) { // euched case
+                t2score =+ 2;
+                cout << *players[1] << " and " << *players[3] 
+                    << " win the hand\n" << "euchred!\n";
+            }
+        }
+        if (declareIndex == 1 || declareIndex == 3) { // t1 called trump
+            if (t2roundsWon >= 3 && t2roundsWon < 5) { // 1 point win
+                t2score++;
+                cout << *players[1] << " and " << *players[3] << " win the hand\n";
+            }
+            else if (t2roundsWon == 5) { // sweep case
+                t2score += 2;
+                cout << *players[1] << " and " << *players[3] 
+                     << " win the hand\n" << "march!\n";
+            }
+            else if (t1roundsWon >= 3) { // euched case
+                t1score =+ 2;
+                cout << *players[0] << " and " << *players[2] 
+                    << " win the hand\n" << "euchred!\n";
+            }
+        }
+    }
+
 };
 int main(){
     cout << "hello from main!" << endl;
