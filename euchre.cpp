@@ -18,8 +18,6 @@ class Game {
 private:
     int t1score;
     int t2score;
-    int t1roundScore;
-    int t2roundScore;
     int dealerCount;
     int turnCount;
     string trump;
@@ -62,12 +60,14 @@ public:
         return players[playerIndex];
     }
     void setPlayers(vector<Player*> players_in) {
-        for (int i = 0; i < players_in.size(); i++) {
+        for (int i = 0; i < static_cast<int>(players_in.size()); i++) {
             players[i] = players_in[i];
         }
     }
 
     void playRound(int declareIndex) {
+        int t1roundScore = 0;
+        int t2roundScore = 0;
         int firstWinner = playTrick(nextPlayer(dealerCount));
         if (firstWinner == 0 || firstWinner == 2) {
             t1roundScore++;
@@ -75,17 +75,17 @@ public:
         else if (firstWinner == 1 || firstWinner == 3) {
             t2roundScore++;
         }
-        int nextPos = nextPlayer(firstWinner);
+        int nextPos = firstWinner;
         for (int i = 1; i < 5; i++) {
 
             int winnersAfter = playTrick(nextPos);
             if (winnersAfter == 0 || winnersAfter == 2) {
                 t1roundScore++;
             }
-            else if (winnersAfter == 1|| winnersAfter == 3) {
+            else if (winnersAfter == 1 || winnersAfter == 3) {
                 t2roundScore++;
             }
-            nextPos = nextPlayer(nextPos);
+            nextPos = winnersAfter;
         }
         dealerCount = nextPlayer(dealerCount);
         roundScoreCalculator(declareIndex, t1roundScore, t2roundScore);
@@ -121,38 +121,31 @@ public:
     void cardDeal() {
     
         // declare dealer
-        cout << players[dealerCount] << " deals\n";
+        cout << *players[dealerCount] << " deals\n";
         // start to left of dealer
         int pos = nextPlayer(dealerCount);
         // deal 3-2-3-2
-        for (int j = 0; j < 4; j++) {
-            if (pos % 2 == 0) {
-                for (int i = 0; i < 3; i++) {
-                    players[pos]->add_card(pack.deal_one());
-                }
-                pos = nextPlayer(pos);
-            }
-            if (pos % 2 != 0) {
-                for (int i = 0; i < 2; i++) {
-                    players[pos]->add_card(pack.deal_one());
-                }
-                pos = nextPlayer(pos);
-            }
+        for (int j = 0; j < 2; j++) {
+			for (int i = 0; i < 3; i++) {
+				players[pos]->add_card(pack.deal_one());
+			}
+			pos = nextPlayer(pos);
+			for (int i = 0; i < 2; i++) {
+				players[pos]->add_card(pack.deal_one());
+			}
+			pos = nextPlayer(pos);
         }
+        pos = nextPlayer(dealerCount);
         // deal 2-3-2-3
-        for (int j = 0; j < 4; j++) {
-            if (pos % 2 == 0) {
-                for (int i = 0; i < 2; i++) {
-                    players[pos]->add_card(pack.deal_one());
-                }
-                pos = nextPlayer(pos);
-            }
-            if (pos % 2 != 0) {
-                for (int i = 0; i < 3; i++) {
-                    players[pos]->add_card(pack.deal_one());
-                }
-                pos = nextPlayer(pos);
-            }
+        for (int j = 0; j < 2; j++) {
+			for (int i = 0; i < 2; i++) {
+				players[pos]->add_card(pack.deal_one());
+			}
+			pos = nextPlayer(pos);
+			for (int i = 0; i < 3; i++) {
+				players[pos]->add_card(pack.deal_one());
+			}
+			pos = nextPlayer(pos);
         }
         // flip upcard
         upcard = pack.deal_one();
@@ -165,24 +158,22 @@ public:
 		for (int i = 0; i < 4; i++) {
 			if (pos == dealerCount) {
 				if (players[pos]->make_trump(upcard, true, 1, trump)) {
-					cout << players[pos] << " orders up " << trump << endl;
-					players[pos]->add_and_discard(upcard);
+                    cout << *players[pos] << " orders up " << trump << endl << endl;
+					players[dealerCount]->add_and_discard(upcard);
                     return pos;
-					break;
 				}
 				else {
-					cout << players[pos] << " passes\n";
+					cout << *players[pos] << " passes\n";
 				}
 			}
 			else {
 				if (players[pos]->make_trump(upcard, false, 1, trump)) {
-					cout << players[pos] << " orders up " << trump << endl;
-					players[pos]->add_and_discard(upcard);
+                    cout << *players[pos] << " orders up " << trump << endl << endl;
+					players[dealerCount]->add_and_discard(upcard);
                     return pos;
-					break;
 				}
 				else {
-					cout << players[pos] << " passes\n";
+					cout << *players[pos] << " passes\n";
 				}
 			}
 			pos = nextPlayer(pos);
@@ -190,12 +181,12 @@ public:
 		}
         for (int i = 0; i < 4; i++) {
             if (players[pos]->make_trump(upcard, false, 2, trump)) {
-                cout << players[pos] << " orders up " << trump << endl;
+                cout << *players[pos] << " orders up " << trump << endl << endl;
                 return pos;
                 break;
             }
             else {
-                cout << players[pos] << " passes\n";
+                cout << *players[pos] << " passes\n";
             }
             pos = nextPlayer(pos);
         }
@@ -203,56 +194,29 @@ public:
 	}
 
     int playTrick(int indexStarter) {
-
         // initialize players from start position
-        int index = indexStarter;
-        Player* starter = players[index];  // Player 0
-        index = nextPlayer(index);
-        Player* player1 = players[index];  // Player 1
-        index = nextPlayer(index);
-        Player* player2 = players[index];  // Player 2
-        index = nextPlayer(index);
-        Player* player3 = players[index];  // Player 3
-        index = nextPlayer(index);
-
-        // variables needed for trickWinner function
-        Card winningCard;
-        Player* curWinner = players[indexStarter];
+        Player* starter = players[indexStarter];  // Player 0      
+        Player* curWinner = starter;
         Card cardLed = starter->lead_card(trump);
-
+        Card winningCard = cardLed;
+        Card compareCard;
         // print led card
         cout << cardLed << " led by " << *starter << endl;
-        winningCard = cardLed;
-
         // determine winning card
-        winningCard = trickWinner(cardLed, winningCard, player1, curWinner);
-        winningCard = trickWinner(cardLed, winningCard, player2, curWinner);
-        winningCard = trickWinner(cardLed, winningCard, player3, curWinner);
-        cout << *curWinner << " takes the trick \n\n"; 
-
-        // index of curWinner
+        int index = nextPlayer(indexStarter);
         int indexWinner = indexStarter;
-        for (int i = 0; i < players.size(); i++) {
-            if (curWinner == players[i]) {
-                indexWinner = i;
+        for (int i = 0; i < 3; i++) {
+            compareCard = players[index]->play_card(cardLed, trump);
+            cout << compareCard << " played by " << *players[index] << endl;
+            if (Card_less(winningCard, compareCard, cardLed, trump)) {
+                curWinner = players[index];
+                winningCard = compareCard;
+                indexWinner = index;
             }
+            index = nextPlayer(index);
         }
+        cout << *curWinner << " takes the trick \n\n"; 
         return indexWinner;      
-    }
-
-    Card trickWinner(Card cardLed, Card justPlayed, Player* curWin, Player* curPlayer) {
-        Card curPlayed = curPlayer->play_card(cardLed, trump);
-        cout << curPlayed << " played by " << curPlayer << endl;
-        if (Card_less(justPlayed, curPlayed, cardLed, trump)) {
-            curWin = curPlayer;
-            return curPlayed;
-        }
-        else if (Card_less(justPlayed, cardLed, cardLed, trump) && 
-                 Card_less(curPlayed, cardLed, cardLed, trump)) {
-            return cardLed;
-
-        }
-        return justPlayed;
     }
 
     void roundScoreCalculator(int declareIndex, int t1roundsWon, int t2roundsWon) {
@@ -295,7 +259,7 @@ public:
             cout << *players[0] << " and " << *players[2] << " win\n";
         }
         else {
-            cout << *players[1] << " and " << players[3] << " win\n";
+            cout << *players[1] << " and " << *players[3] << " win\n";
         }
     }
 
@@ -303,41 +267,31 @@ public:
 
 void playGame(Game game, int points_to_win, vector<Player*> players_in) {
     // remain in point limit
+    int handNumber = 0;
     while (game.gett1score() < points_to_win &&
            game.gett2score() < points_to_win) {
-        int handNumber = 0;
         // shuffle and deal
+        cout << "Hand " << handNumber << endl;
+        handNumber++;
         game.shuffler();
         game.cardDeal();
         // print hand number and begin round
-        cout << "Hand " << handNumber << endl;
         game.playRound(game.makeTrump());
         cout << *players_in[0] << " and " << *players_in[2] 
              << " have " << game.gett1score() << " points\n\n";
         cout << *players_in[1] << " and " << *players_in[3] 
              << " have " << game.gett2score() << " points\n\n";
-             handNumber++;
+             
     }
     game.declareWinner();
 }
 
-bool readPack(string filename, Pack &pack_in) {
-        ifstream inputOpener;
-        inputOpener.open(filename);
-        if (inputOpener.is_open()) {
-            pack_in = Pack(inputOpener);
-            return true;
-        }
-        return false;
-    }
-
 int main(int argc, char** argv){
-    Pack pack = Pack();
     int scoreLimit = atoi(argv[3]);
     string fileName = argv[1];
     string shuffleType = argv[2], player1Type = argv[5], player2Type = argv[5];
     string player3Type = argv[9], player4Type = argv[11];
-    bool validShuffle = true, isPlayer = true, wantShuffle;
+    bool validShuffle = true, isPlayer = true, wantShuffle = false;
     if (shuffleType == "shuffle") {
         wantShuffle = true;
     }
@@ -366,19 +320,25 @@ int main(int argc, char** argv){
              << "NAME4 TYPE4" << endl;
              return 1;
     }
-    if (!readPack(fileName, pack)) {
+    ifstream file;
+    file.open(fileName);
+    if (!file.is_open()) {
         cout << "Error opening " << fileName << endl;
         return 1;
     }
-    vector<Player*> players = {Player_factory(string(argv[4]), player1Type), 
+    
+    Pack pack = Pack(file);
+    vector<Player*> players = {Player_factory(string(argv[4]), player1Type),
                                Player_factory(string(argv[6]), player2Type), 
                                Player_factory(string(argv[8]), player3Type), 
                                Player_factory(string(argv[10]), player4Type)};
     Game game = Game(pack, wantShuffle, players);
 
     playGame(game, scoreLimit, players);
-    for (int i = 0; i < players.size(); i++) {
+    
+    for (int i = 0; i < static_cast<int>(players.size()); i++) {
         delete players[i];
     }
+    
     return 1;
 }

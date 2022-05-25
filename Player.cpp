@@ -148,14 +148,14 @@ public:
                 index = handCount;
             }
         }
-        if (min < upcard) {
+        if (Card_less(min, upcard, upcard.get_suit())) {
             hand[index] = upcard;
         }
     }
 
     Card lead_card(const std::string& trump) {
         sort(hand.begin(), hand.end());
-        Card returnCard, max = hand[0];
+        Card returnCard;
         bool hasRight = false, hasLeft = false;
         int leftIndex = 0, rightIndex = 0, numTrump = 0, nonTrump = 0;
         // for loop to count num trump and non trump
@@ -191,15 +191,13 @@ public:
             }
         }
         else {           
-            int i = static_cast<int>(hand.size() - 1) ;
-            while (!hand[i].is_trump(trump)) {
-                if (hand[i] > max) {
-                    max = hand[i];
+            for (int i = static_cast<int>(hand.size() - 1); i >= 0; i--) {
+                if (!hand[i].is_trump(trump)) {
+                    returnCard = hand[i];
+                    hand.erase(hand.begin() + i);
+                    return returnCard;
                 }
-                i--;
-            }
-            returnCard = max;
-            hand.erase(hand.begin() + hand.size() - 1 - numTrump);         
+            }        
         }
         return returnCard;
     }
@@ -210,17 +208,53 @@ public:
         sort(hand.begin(), hand.end());
         int ledIndex = 0;
         for (int handCount = 0; handCount < static_cast<int>(hand.size()); handCount++) {
-            if (hand[handCount].get_suit() == led_card.get_suit()) {
-                ledIndex = handCount;
-            }
+			if (hand[handCount].get_suit(trump) == led_card.get_suit(trump)) {
+				ledIndex = handCount;
+			}
         }
         if (ledIndex != 0) {
             returnCard = hand[ledIndex];
             hand.erase(hand.begin() + ledIndex);
         }
         else {
-            returnCard = hand[0];
-            hand.erase(hand.begin());
+            Card min = hand[0];
+            int indexHolder = 0;
+            for (int i = 0; i < static_cast<int>(hand.size()); i++) {
+                if (!hand[i].is_trump(trump)) {
+                    returnCard = hand[i];
+                    hand.erase(hand.begin() + i);
+                    return returnCard;
+                }
+                
+                if (Card_less(hand[i], min, trump)) {
+                    min = hand[i];
+                    indexHolder = i;
+                }
+            }
+            returnCard = min;
+            hand.erase(hand.begin() + indexHolder);
+            /*if (hand[0].is_left_bower(trump) || hand[0].is_right_bower(trump)) {
+                for (int i = 0; i < static_cast<int>(hand.size()); i++) {
+                    if (!hand[i].is_left_bower(trump) &&
+                        !hand[i].is_right_bower(trump)) {
+                        returnCard = hand[i];
+                        hand.erase(hand.begin() + i);
+                        return returnCard;
+                    }
+                }
+            }
+            if ((hand[0].is_left_bower(trump) && hand[1].is_right_bower(trump)) ||
+                (hand[0].is_right_bower(trump) && hand[0].is_left_bower(trump))) {
+                if (hand[0].is_left_bower(trump)) {
+                    returnCard = hand[0];
+                    hand.erase(hand.begin());
+                }
+                if (hand[0].is_right_bower(trump)) {
+                    returnCard = hand[1];
+                    hand.erase(hand.begin() + 1);
+                }
+            }
+            */
         }
         return returnCard;
     }

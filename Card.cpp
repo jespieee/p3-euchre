@@ -258,20 +258,26 @@ bool Card_less(const Card &a, const Card &b, const std::string &trump){
 bool Card_less(const Card &a, const Card &b, const Card &led_card,
                const std::string &trump){
 
-    if (a.get_suit() != led_card.get_suit() && b.get_suit() != led_card.get_suit()) {
+    if (a.get_suit(trump) != led_card.get_suit(trump) && 
+        b.get_suit(trump) != led_card.get_suit(trump)) {
         return Card_less(a, b, trump);
     }
     //a led card suit but b not
-    else if(a.get_suit() == led_card.get_suit() && b.get_suit()
-                                                != led_card.get_suit()){
+    else if(a.get_suit(trump) == led_card.get_suit(trump) && 
+        b.get_suit(trump) != led_card.get_suit(trump)){
         //maybe check if b is not trump
+        if (b.is_trump(trump)) {
+            return true;
+        }
         return false;
     }
     //b led card suit but a not
-    else if(a.get_suit() == led_card.get_suit() && b.get_suit() == led_card.get_suit()){
-        if(a.get_rank() >= b.get_rank()){
+    else if (a.get_suit(trump) != led_card.get_suit(trump) &&
+        b.get_suit(trump) == led_card.get_suit(trump)) {
+        if (a.is_trump(trump)) {
             return false;
         }
+        return true;
     }
     //both led card suit
     else {
