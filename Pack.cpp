@@ -39,10 +39,6 @@ Pack::Pack(std::istream& pack_input) {
 Card Pack::deal_one() {
     int hold = next;
     ++next;
-    if (empty()) {
-        reset();
-        hold = 0;
-    }
     return cards[hold];
 }
 

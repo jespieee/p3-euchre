@@ -30,8 +30,13 @@ public:
 
   bool make_trump(const Card &upcard, bool is_dealer,
                                  int round, std::string &order_up_suit) const {
+      for (int i = 0; i < static_cast<int>(hand.size()); i++) {
+          cout << "Human player " << name << "'s hand: [" << i <<
+              "] " << hand[i] << endl;
+      }
       string choice;
       bool decision = true;
+      cout << "Human player " << name << ", please enter a suit, or \"pass\":\n";
       cin >> choice;
       if (choice == "pass") {
           decision = false;
@@ -43,6 +48,8 @@ public:
   }
 
   void add_and_discard(const Card &upcard) {
+      cout << "Discard upcard: [-1]\n";
+      cout << "Human player " << name << ", please select a card to discard:\n";
       int indexChosen;
       cin >> indexChosen;
       if (indexChosen == -1) {
@@ -56,6 +63,11 @@ public:
 
   Card lead_card(const std::string &trump) {
       sort(hand.begin(), hand.end());
+      for (int i = 0; i < static_cast<int>(hand.size()); i++) {
+          cout << "Human player " << name << "'s hand: [" << i <<
+              "] " << hand[i] << endl;
+      }
+      cout << "Human player " << name << ", please select a card:\n";
       int indexChosen;
       cin >> indexChosen;
       return hand[indexChosen];
@@ -63,6 +75,11 @@ public:
 
   Card play_card(const Card &led_card, const std::string &trump) {
       sort(hand.begin(), hand.end());
+      for (int i = 0; i < static_cast<int>(hand.size()); i++) {
+          cout << "Human player " << name << "'s hand: [" << i <<
+              "] " << hand[i] << endl;
+      }
+      cout << "Human player " << name << ", please select a card:\n";
       int indexChosen;
       cin >> indexChosen;
       return hand[indexChosen];
@@ -90,49 +107,37 @@ public:
 
     bool make_trump(const Card& upcard, bool is_dealer,
         int round, std::string& order_up_suit) const {
-        // 2nd round strategy
-        // orderup if hand has face of opposite color to order_up_suit
-        if (round == 2) {
-            for (int handCount = 0; handCount < MAX_HAND_SIZE; handCount++) {
-                if (upcard.get_suit() == SUIT_NAMES_BY_WEIGHT[0] &&
-                    hand[handCount].is_face() &&
-                    hand[handCount].get_suit() == SUIT_NAMES_BY_WEIGHT[2]) {
-                    order_up_suit = SUIT_NAMES_BY_WEIGHT[2];
-                    return true;
-                }
-                else if (order_up_suit == SUIT_NAMES_BY_WEIGHT[1] &&
-                    hand[handCount].is_face() &&
-                    hand[handCount].get_suit() == SUIT_NAMES_BY_WEIGHT[3]) {
-                    order_up_suit = SUIT_NAMES_BY_WEIGHT[3];
-                    return true;
-                }
-                else if (order_up_suit == SUIT_NAMES_BY_WEIGHT[2] &&
-                    hand[handCount].is_face() &&
-                    hand[handCount].get_suit() == SUIT_NAMES_BY_WEIGHT[0]) {
-                    order_up_suit = SUIT_NAMES_BY_WEIGHT[0];
-                    return true;
-                }
-                else if (order_up_suit == SUIT_NAMES_BY_WEIGHT[3] &&
-                    hand[handCount].is_face() &&
-                    hand[handCount].get_suit() == SUIT_NAMES_BY_WEIGHT[1]) {
-                    order_up_suit = SUIT_NAMES_BY_WEIGHT[1];
-                    return true;
-                }
-            }
-        }
 
-        // 1st round strategy
-        // check for 2 or more trump face cards
-        else {
+        string oppSuit = Suit_next(upcard.get_suit());
+        if (round == 2 && is_dealer) {
+            order_up_suit = oppSuit;
+            return true;
+        }
+        else if (round == 1) {
             int trumpFace = 0;
-            for (int handCount = 0; handCount < MAX_HAND_SIZE; handCount++) {
-                if (hand[handCount].is_face() && 
-                    hand[handCount].is_trump(upcard.get_suit())) {
+            for (int i = 0; i < static_cast<int>(hand.size()); i++) {
+                if (hand[i].is_face() &&
+                    hand[i].is_trump(upcard.get_suit())) {
                     trumpFace++;
                 }
             }
             if (trumpFace >= 2) {
                 order_up_suit = upcard.get_suit();
+                return true;
+            }
+        }
+        else if (round == 2) {
+            int count = 0;
+            for (int i = 0; i < static_cast<int>(hand.size()); i++) {
+                if (hand[i].is_left_bower(oppSuit) || hand[i].is_right_bower(oppSuit)) {
+                    count++;
+                }
+                if (hand[i].is_face() && hand[i].get_suit() == oppSuit) {
+                    count++;
+                }
+            }
+            if (count >= 1) {
+                order_up_suit = oppSuit;
                 return true;
             }
         }
@@ -143,12 +148,12 @@ public:
         Card min = hand[0];
         int index = 0;
         for (int handCount = 0; handCount < static_cast<int>(hand.size()); handCount++) {
-            if (hand[handCount] < min) {
+            if (Card_less(hand[handCount], min, upcard.get_suit(upcard.get_suit()))) {
                 min = hand[handCount];
                 index = handCount;
             }
         }
-        if (Card_less(min, upcard, upcard.get_suit())) {
+        if (Card_less(min, upcard, upcard.get_suit(upcard.get_suit()))) {
             hand[index] = upcard;
         }
     }
@@ -205,56 +210,38 @@ public:
     Card play_card(const Card& led_card, const std::string& trump) {
 
         Card returnCard;
-        sort(hand.begin(), hand.end());
-        int ledIndex = 0;
-        for (int handCount = 0; handCount < static_cast<int>(hand.size()); handCount++) {
-			if (hand[handCount].get_suit(trump) == led_card.get_suit(trump)) {
-				ledIndex = handCount;
+        Card max;
+        int index = 0;
+        bool canFollow = false;
+        for (int i = 0; i < static_cast<int>(hand.size()); i++) {
+			if (hand[i].get_suit(trump) == led_card.get_suit(trump)) {
+                canFollow = true;
+                max = hand[i];
+                index = i;
 			}
         }
-        if (ledIndex != 0) {
-            returnCard = hand[ledIndex];
-            hand.erase(hand.begin() + ledIndex);
+        if (canFollow) {
+            for (int i = 0; i < static_cast<int>(hand.size()); i++) {
+                if (hand[i].get_suit(trump) == led_card.get_suit(trump) &&
+					(Card_less(max, hand[i], trump))) {
+					max = hand[i];
+					index = i;
+				}
+            }
+            hand.erase(hand.begin() + index);
+            return max;
         }
         else {
             Card min = hand[0];
             int indexHolder = 0;
             for (int i = 0; i < static_cast<int>(hand.size()); i++) {
-                if (!hand[i].is_trump(trump)) {
-                    returnCard = hand[i];
-                    hand.erase(hand.begin() + i);
-                    return returnCard;
-                }
-                
-                if (Card_less(hand[i], min, trump)) {
-                    min = hand[i];
-                    indexHolder = i;
-                }
+				if (Card_less(hand[i], min, trump)) {
+					min = hand[i];
+					indexHolder = i;
+				}
             }
-            returnCard = min;
             hand.erase(hand.begin() + indexHolder);
-            /*if (hand[0].is_left_bower(trump) || hand[0].is_right_bower(trump)) {
-                for (int i = 0; i < static_cast<int>(hand.size()); i++) {
-                    if (!hand[i].is_left_bower(trump) &&
-                        !hand[i].is_right_bower(trump)) {
-                        returnCard = hand[i];
-                        hand.erase(hand.begin() + i);
-                        return returnCard;
-                    }
-                }
-            }
-            if ((hand[0].is_left_bower(trump) && hand[1].is_right_bower(trump)) ||
-                (hand[0].is_right_bower(trump) && hand[0].is_left_bower(trump))) {
-                if (hand[0].is_left_bower(trump)) {
-                    returnCard = hand[0];
-                    hand.erase(hand.begin());
-                }
-                if (hand[0].is_right_bower(trump)) {
-                    returnCard = hand[1];
-                    hand.erase(hand.begin() + 1);
-                }
-            }
-            */
+            return min;
         }
         return returnCard;
     }

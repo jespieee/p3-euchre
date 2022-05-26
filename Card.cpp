@@ -222,22 +222,22 @@ std::ostream& operator<<(std::ostream& os, const Card& card) {
 // order, as described in the spec.
 bool Card_less(const Card &a, const Card &b, const std::string &trump){
     //both trump
-    if (a.is_trump(trump) && b.is_trump(trump)) {
-        if (b.is_right_bower(trump)) {
-            return true;
-        }
-        else if (a >= b) {
-            return false;
-        }
-        else if (a.is_right_bower(trump)) {
-            return false;
-        }
-        else if (a.is_left_bower(trump) && !(b.is_right_bower(trump))) {
-            return false;
-        }
-    }
+
+	if (b.is_right_bower(trump)) {
+		return true;
+	}
+	else if (a.is_right_bower(trump)) {
+		return false;
+	}
+	else if (a.is_left_bower(trump)) {
+		return false;
+	}
+	else if (b.is_left_bower(trump)) {
+		return true;
+	}
+
     //a trump
-    else if (a.is_trump(trump) && !(b.is_trump(trump))) { 
+    if (a.is_trump(trump) && !(b.is_trump(trump))) { 
         return false;
     }
     //btrump
@@ -245,11 +245,11 @@ bool Card_less(const Card &a, const Card &b, const std::string &trump){
         return true;
     }
     else{
-        if (a >= b) {
-            return false;
+        if (a < b) {
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 //REQUIRES trump is a valid suit
@@ -263,7 +263,7 @@ bool Card_less(const Card &a, const Card &b, const Card &led_card,
         return Card_less(a, b, trump);
     }
     //a led card suit but b not
-    else if(a.get_suit(trump) == led_card.get_suit(trump) && 
+    else if (a.get_suit(trump) == led_card.get_suit(trump) && 
         b.get_suit(trump) != led_card.get_suit(trump)){
         //maybe check if b is not trump
         if (b.is_trump(trump)) {
@@ -281,11 +281,11 @@ bool Card_less(const Card &a, const Card &b, const Card &led_card,
     }
     //both led card suit
     else {
-        if (a >= b) {
-            return false;
+        if (Card_less(a, b, trump)) {
+            return true;
         }
     }
-    return true;
+    return false;
 }
 // NOTE: We HIGHLY recommend you check out the operator overloading
 // tutorial in the project spec (see the appendices) before implementing

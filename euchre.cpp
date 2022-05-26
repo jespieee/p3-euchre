@@ -190,6 +190,7 @@ public:
             }
             pos = nextPlayer(pos);
         }
+        dealerCount = nextPlayer(dealerCount);
         return pos;
 	}
 
@@ -215,7 +216,7 @@ public:
             }
             index = nextPlayer(index);
         }
-        cout << *curWinner << " takes the trick \n\n"; 
+        cout << *curWinner << " takes the trick\n\n"; 
         return indexWinner;      
     }
 
@@ -256,10 +257,10 @@ public:
 
     void declareWinner() {
         if (t1score > t2score) {
-            cout << *players[0] << " and " << *players[2] << " win\n";
+            cout << *players[0] << " and " << *players[2] << " win!\n";
         }
         else {
-            cout << *players[1] << " and " << *players[3] << " win\n";
+            cout << *players[1] << " and " << *players[3] << " win!\n";
         }
     }
 
@@ -278,7 +279,7 @@ void playGame(Game game, int points_to_win, vector<Player*> players_in) {
         // print hand number and begin round
         game.playRound(game.makeTrump());
         cout << *players_in[0] << " and " << *players_in[2] 
-             << " have " << game.gett1score() << " points\n\n";
+             << " have " << game.gett1score() << " points\n";
         cout << *players_in[1] << " and " << *players_in[3] 
              << " have " << game.gett2score() << " points\n\n";
              
@@ -291,6 +292,8 @@ int main(int argc, char** argv){
     string fileName = argv[1];
     string shuffleType = argv[2], player1Type = argv[5], player2Type = argv[5];
     string player3Type = argv[9], player4Type = argv[11];
+    string player1Name = argv[4], player2Name = argv[6], player3Name = argv[8];
+    string player4Name = argv[10];
     bool validShuffle = true, isPlayer = true, wantShuffle = false;
     if (shuffleType == "shuffle") {
         wantShuffle = true;
@@ -320,6 +323,14 @@ int main(int argc, char** argv){
              << "NAME4 TYPE4" << endl;
              return 1;
     }
+    cout << "./euchre.exe " << fileName << " "
+        << shuffleType << " " << scoreLimit << " " <<
+        player1Name << " " << player1Type << " " <<
+        player2Name << " " << player2Type << " " <<
+        player3Name << " " << player3Type << " " <<
+        player4Name << " " << player4Type << " " << endl;
+
+    
     ifstream file;
     file.open(fileName);
     if (!file.is_open()) {
