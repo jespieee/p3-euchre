@@ -223,28 +223,20 @@ TEST(test_play_card3) {
 
 TEST(test_add_and_discard_add){
     Player* p1 = Player_factory("Rico", "Simple");
-    Card king_spade = Card(Card::RANK_KING, Card::SUIT_SPADES);
-    Card queen_spade = Card(Card::RANK_QUEEN, Card::SUIT_SPADES);
-    Card led = Card(Card::RANK_TEN, Card::SUIT_SPADES);
-    p1->add_card(queen_spade);
-    const Card upcard = king_spade;
-    p1->add_and_discard(upcard);
-    Card played = p1->play_card(led, Card::SUIT_HEARTS);
+    p1->add_card(Card(Card::RANK_QUEEN, Card::SUIT_SPADES));
+    p1->add_and_discard(Card(Card::RANK_KING, Card::SUIT_SPADES));
+    Card played = p1->play_card(Card(Card::RANK_TEN, Card::SUIT_SPADES), Card::SUIT_HEARTS);
     
-    ASSERT_EQUAL(played, king_spade);
+    ASSERT_EQUAL(played, Card(Card::RANK_KING, Card::SUIT_SPADES));
 }
 
 TEST(test_add_and_discard_not){
     Player* p1 = Player_factory("Rico", "Simple");
-    Card king_spade = Card(Card::RANK_KING, Card::SUIT_SPADES);
-    Card queen_spade = Card(Card::RANK_QUEEN, Card::SUIT_SPADES);
-    Card led = Card(Card::RANK_TEN, Card::SUIT_SPADES);
-    p1->add_card(king_spade);
-    const Card upcard = queen_spade;
-    p1->add_and_discard(upcard);
-    Card played = p1->play_card(led, Card::SUIT_HEARTS);
+    p1->add_card(Card(Card::RANK_KING, Card::SUIT_SPADES));
+    p1->add_and_discard(Card(Card::RANK_QUEEN, Card::SUIT_SPADES));
+    Card played = p1->play_card(Card(Card::RANK_TEN, Card::SUIT_SPADES), Card::SUIT_HEARTS);
     
-    ASSERT_EQUAL(played, king_spade);
+    ASSERT_EQUAL(played, Card(Card::RANK_KING, Card::SUIT_SPADES));
 }
 
 TEST_MAIN()
