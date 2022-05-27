@@ -228,6 +228,7 @@ TEST(test_add_and_discard_add){
     Card played = p1->play_card(Card(Card::RANK_TEN, Card::SUIT_SPADES), Card::SUIT_HEARTS);
     
     ASSERT_EQUAL(played, Card(Card::RANK_KING, Card::SUIT_SPADES));
+    delete p1;
 }
 
 TEST(test_add_and_discard_not){
@@ -237,6 +238,7 @@ TEST(test_add_and_discard_not){
     Card played = p1->play_card(Card(Card::RANK_TEN, Card::SUIT_SPADES), Card::SUIT_HEARTS);
     
     ASSERT_EQUAL(played, Card(Card::RANK_KING, Card::SUIT_SPADES));
+    delete p1;
 }
 
 TEST_MAIN()
